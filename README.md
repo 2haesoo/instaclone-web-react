@@ -10,6 +10,6 @@ npm i --save @fortawesome/fontawesome-svg-core
 
 ## TODO
 -[x] Router
--[ ] Authentication
--[ ] Architecture
+-[x] Authentication
+-[x] Architecture
 -[ ] Styles 
