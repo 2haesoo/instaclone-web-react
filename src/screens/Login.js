@@ -1,10 +1,20 @@
 import React from 'react'
+import styled from 'styled-components'
 import { isLoggedInVar } from '../apollo'
+
+const Title = styled.h1`
+    color: bisque;
+    font-family: sans-serif;
+`;
+
+const Container = styled.div`
+    background-color: tomato;
+`;
 
 function Login() {
     return (
         <div>
-            <h1>Login</h1>
+            <Container><Title>Login</Title></Container>
             <button onClick={() => isLoggedInVar(true)}>Log In</button>
         </div>
     )
