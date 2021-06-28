@@ -15,3 +15,7 @@ npm i --save @fortawesome/fontawesome-svg-core
 -[x] Styles (download vscode-styled-components)
 -[] Sign Up
 -[] Login
+
+## ETC
+Create User Snippet
+Preferences: Configure User Snippets
