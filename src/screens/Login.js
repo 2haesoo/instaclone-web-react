@@ -1,10 +1,11 @@
 import React from 'react'
+import { isLoggedInVar } from '../apollo'
 
-function Login({ setIsLoggedIn }) {
+function Login() {
     return (
         <div>
             <h1>Login</h1>
-            <button onClick={() => setIsLoggedIn(true)}>Log In</button>
+            <button onClick={() => isLoggedInVar(true)}>Log In</button>
         </div>
     )
 }
