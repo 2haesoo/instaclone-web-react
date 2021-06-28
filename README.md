@@ -12,4 +12,6 @@ npm i --save @fortawesome/fontawesome-svg-core
 -[x] Router
 -[x] Authentication
 -[x] Architecture
--[ ] Styles (download vscode-styled-components)
+-[x] Styles (download vscode-styled-components)
+-[] Sign Up
+-[] Login
