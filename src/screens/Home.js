@@ -1,9 +1,10 @@
 import React from 'react'
 
-function Home() {
+function Home({ setIsLoggedIn }) {
     return (
         <div>
-            Home
+            <h1>Home</h1>
+            <button onClick={() => setIsLoggedIn(false)}>Logout</button>
         </div>
     )
 }
