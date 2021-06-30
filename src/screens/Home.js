@@ -1,10 +1,12 @@
+import { useHistory } from 'react-router';
 import { logUserOut } from '../apollo'
 
 function Home() {
+    const history = useHistory();
     return (
         <div>
             <h1>Welcome we did it</h1>
-            <button onClick={() => logUserOut()}>Log Out</button>
+            <button onClick={() => logUserOut(history)}>Log Out</button>
         </div>
     )
 }

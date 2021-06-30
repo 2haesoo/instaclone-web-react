@@ -5,6 +5,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { logUserIn } from "../apollo";
 import AuthLayout from "../components/auth/AuthLayout";
@@ -25,6 +26,12 @@ const FacebookLogin = styled.div`
   }
 `;
 
+const Notification = styled.div`
+  margin-top: 5px;
+  color: black;
+  font-weight: 600;
+`;
+
 const LOGIN_MUTATION = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
@@ -36,18 +43,33 @@ const LOGIN_MUTATION = gql`
 `;
 
 function Login() {
-  const { register, handleSubmit, errors, formState, getValues, setError, clearErrors } = useForm({
+  const location = useLocation();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    formState,
+    getValues,
+    setError,
+    clearErrors,
+  } = useForm({
     mode: "onChange",
+    defaultValues: {
+      username: location?.state?.username || "",
+      password: location?.state?.password || "",
+    },
   });
   const onCompleted = (data) => {
-    const { login: {ok, error, token }} = data;
-    if(!ok){
-        return setError("result", {
-            message: error
-        })
+    const {
+      login: { ok, error, token },
+    } = data;
+    if (!ok) {
+      return setError("result", {
+        message: error,
+      });
     }
-    if(token){
-        logUserIn(token);
+    if (token) {
+      logUserIn(token);
     }
   };
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
@@ -64,8 +86,8 @@ function Login() {
   };
   const onSubmitInvalid = (data) => {};
   const clearLoginError = () => {
-      clearErrors("result");
-  }
+    clearErrors("result");
+  };
   return (
     <AuthLayout>
       <PageTitle title="Login" />
@@ -73,6 +95,7 @@ function Login() {
         <div>
           <FontAwesomeIcon icon={faInstagram} size="3x" />
         </div>
+        <Notification>{location?.state?.message}</Notification>
         <form onSubmit={handleSubmit(onSubmitValid, onSubmitInvalid)}>
           <Input
             ref={register({
