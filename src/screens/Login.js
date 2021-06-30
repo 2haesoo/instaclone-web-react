@@ -1,3 +1,4 @@
+import { gql, useMutation } from "@apollo/client";
 import {
   faFacebookSquare,
   faInstagram,
@@ -23,16 +24,41 @@ const FacebookLogin = styled.div`
   }
 `;
 
+const LOGIN_MUTATION = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      ok
+      token
+      error
+    }
+  }
+`;
+
 function Login() {
-  const { register, handleSubmit, errors, formState } = useForm({
-      mode: "onChange",
+  const { register, handleSubmit, errors, formState, getValues, setError } = useForm({
+    mode: "onChange",
+  });
+  const onCompleted = (data) => {
+    const { login: {ok, error, token }} = data;
+    if(!ok){
+        setError("result", {
+            message: error
+        })
+    }
+  };
+  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted,
   });
   const onSubmitValid = (data) => {
-    
+    if (loading) {
+      return;
+    }
+    const { username, password } = getValues();
+    login({
+      variables: { username, password },
+    });
   };
-  const onSubmitInvalid = (data) => {
-    
-  };
+  const onSubmitInvalid = (data) => {};
   console.log(errors);
   return (
     <AuthLayout>
@@ -46,9 +72,9 @@ function Login() {
             ref={register({
               required: "Username is required.",
               minLength: {
-                  value: 5,
-                  message: "Username should be longer than 5 chars."
-              }
+                value: 5,
+                message: "Username should be longer than 5 chars.",
+              },
             })}
             name="username"
             type="text"
@@ -66,7 +92,12 @@ function Login() {
             hasError={Boolean(errors?.password?.message)}
           />
           <FormError message={errors?.password?.message} />
-          <Button type="submit" value="Log in" disabled={!formState.isValid}/>
+          <Button
+            type="submit"
+            value={loading ? "Loading..." : "Log In"}
+            disabled={!formState.isValid || loading}
+          />
+          <FormError message={errors?.result?.message} />
         </form>
         <Separator />
         <FacebookLogin>
