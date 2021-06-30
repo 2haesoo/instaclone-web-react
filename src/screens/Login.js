@@ -6,6 +6,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { logUserIn } from "../apollo";
 import AuthLayout from "../components/auth/AuthLayout";
 import BottomBox from "../components/auth/BottomBox";
 import Button from "../components/auth/Button";
@@ -41,9 +42,12 @@ function Login() {
   const onCompleted = (data) => {
     const { login: {ok, error, token }} = data;
     if(!ok){
-        setError("result", {
+        return setError("result", {
             message: error
         })
+    }
+    if(token){
+        logUserIn(token);
     }
   };
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
@@ -59,7 +63,6 @@ function Login() {
     });
   };
   const onSubmitInvalid = (data) => {};
-  console.log(errors);
   const clearLoginError = () => {
       clearErrors("result");
   }
