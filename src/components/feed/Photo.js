@@ -11,6 +11,7 @@ import styled from "styled-components";
 import Avatar from "../../components/Avatar";
 import { FatText } from "../../components/shared";
 import { gql, useMutation } from "@apollo/client";
+import Comments from "./Comments";
 
 const TOGGLE_LIKE_MUTATION = gql`
   mutation toggleLike($id: Int!) {
@@ -71,23 +72,16 @@ const Likes = styled(FatText)`
   display: block;
 `;
 
-const Comments = styled.div`
-  margin-top: 24px;
-`;
-const Comment = styled.div``;
-const CommentCaption = styled.span`
-  margin-left: 10px;
-`;
-
-const CommentCount = styled.span`
-  opacity: 0.7;
-  margin: 10px 0px;
-  display: block;
-  font-weight: 600;
-  font-size: 10px;
-`;
-
-function Photo({ id, user, file, isLiked, likes, caption, commentNumber, comments }) {
+function Photo({
+  id,
+  user,
+  file,
+  isLiked,
+  likes,
+  caption,
+  comments,
+  commentNumber,
+}) {
   const updateToggleLike = (cache, result) => {
     const {
       data: {
@@ -155,15 +149,12 @@ function Photo({ id, user, file, isLiked, likes, caption, commentNumber, comment
           </div>
         </PhotoActions>
         <Likes>{likes === 1 ? "1 like" : `${likes} likes`}</Likes>
-        <Comments>
-          <Comment>
-            <FatText>{user.username}</FatText>
-            <CommentCaption>{caption}</CommentCaption>
-          </Comment>
-          <CommentCount>
-            {commentNumber === 1 ? "1 comment" : `${commentNumber} comments`}
-          </CommentCount>
-        </Comments>
+        <Comments
+          author={user.username}
+          caption={caption}
+          comments={comments}
+          commentNumber={commentNumber}
+        />
       </PhotoData>
     </PhotoContainer>
   );
@@ -180,9 +171,6 @@ Photo.propTypes = {
   isLiked: PropTypes.bool.isRequired,
   likes: PropTypes.number.isRequired,
   commentNumber: PropTypes.number.isRequired,
-  comments: PropTypes.arrayOf(PropTypes.shape({
-    
-  }))
 };
 
 export default Photo;
