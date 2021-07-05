@@ -22,12 +22,13 @@ export const GlobalStyles = createGlobalStyle`
       box-sizing:border-box;
     }
     body {
-        background-color: ${props => props.theme.bgColor};
-        color: ${props => props.theme.fontColor};
+        background-color: ${(props) => props.theme.bgColor};
+        color: ${(props) => props.theme.fontColor};
         font-size:14px;
         font-family:'Open Sans', sans-serif;
     }
     a {
       text-decoration: none;
+      color: inherit
     }
 `;
